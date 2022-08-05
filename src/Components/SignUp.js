@@ -1,34 +1,50 @@
 import react, { useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import styled from 'styled-components'
 import logo from '../Assets/Imgs/logo.svg'
 import { ThreeDots } from 'react-loader-spinner'
+import axios from "axios"
 
 export default function SignUp() {
 
+    const navigate = useNavigate()
     const [signup, setSignup] = useState("Cadastrar")
-    const [inputOne, setInputOne] = useState(<input type="email" name="email" placeholder="email" pattern=".+@gmail.com" required />)
-    const [inputTwo, setInputTwo] = useState(<input type="password" name="password" placeholder="senha" minLength="4" required />)
-    const [inputThree, setInputThree] = useState(<input type="text" name="name" placeholder="nome" required />)
-    const [inputFour, setInputFour] = useState(<input type="text" name="picture" placeholder="foto" required />
-    )
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [name, setName] = useState("")
+    const [picture, setPicture] = useState("")
+    const [disabled, setDisabled] = useState(false)
+
+    function erros(error) {
+
+        console.log(error.response.status);
+      
+        if (error.response.status === 409) {
+          alert("Já existe alguém com  esse cadastro!");
+          setSignup("Entrar")
+          setDisabled(false)
+        }
+      }
+
+    function Post() {
+       const body = {
+            email: email,
+            name: name,
+            image: picture,
+            password: password
+        }
+        const promise = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up", body)
+
+        promise.then(() => 
+        navigate('/')
+        )
+    }
 
     function handleForm(e) {
         e.preventDefault()
-        
-        try {
-            setSignup(<ThreeDots color="#FFFFFF" height={13} width={51} />)
-
-            setInputOne(<input type="email" name="email" placeholder="email" pattern=".+@gmail.com" disabled />)
-
-            setInputTwo(<input type="password" name="password" placeholder="senha" minLength="4" disabled/>)
-
-            setInputThree(<input type="text" name="name" placeholder="nome" disabled />)
-
-            setInputFour(<input type="text" name="picture" placeholder="foto" disabled />)
-            } catch (error) {
-                alert("deu ruim")
-            }
+        setSignup(<ThreeDots color="#FFFFFF" height={13} width={51} />)
+        setDisabled(true)
+        Post()
     }
 
     return (
@@ -41,10 +57,15 @@ export default function SignUp() {
 
                 <Formulario>
                     <form onSubmit={handleForm}>
-                        {inputOne}
-                        {inputTwo}
-                        {inputThree}
-                        {inputFour}
+
+                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="email" pattern=".+@gmail.com" required disabled={disabled}/>
+
+                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="senha" minLength="4" disabled={disabled} />
+
+                    <input type="text" value={name} onChange={(e) => setName(e.target.value)} name="name" placeholder="nome" required />
+                        
+                    <input type="text" value={picture} onChange={(e) => setPicture(e.target.value)} name="picture" placeholder="foto" required />
+
                         <Button>{signup}</Button>
                     </form>
                 </Formulario>
