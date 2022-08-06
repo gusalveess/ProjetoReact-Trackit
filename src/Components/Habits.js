@@ -6,12 +6,12 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Footer from "./Footer";
 import Header from "./header";
+import AddButton from './AddHabit'
+import List from './ListHabits'
 
 
 export default function Habits() {
     const Navigate = useNavigate()
-    const [habitos, setHabitos] = useState([])
-
     const get = localStorage.getItem('trackit')
     const string = JSON.stringify(get)
     const auth = JSON.parse(string)
@@ -22,18 +22,17 @@ export default function Habits() {
         }
     }
 
-    useEffect(() => {
-        verify()
-        const config = {
-            headers: {
-              'Authorization': `Bearer ${auth}`
-            }
-         }
+    const [hidden, setHidden] = useState(false);
 
-        const promisse = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', config);
-        promisse.then(res => setHabitos(res.data) );
-        promisse.catch(err => console.log(err.response.status))
-    }, [])
+     function hidde() {
+       
+        if(hidden == false) {
+            setHidden(true)
+        }
+        else {
+            setHidden(false)
+        }
+    }
 
     return (
         
@@ -43,11 +42,20 @@ export default function Habits() {
 
                 <AddHabits>
                     <p>Meus Hábitos</p>
-                    <button /*  onClick={Navigate('/add') */>+</button>
+                    <button onClick={() =>hidde()}>+</button>
                 </AddHabits>
 
                 <ContainerHabits>
-                {habitos.length === 0 ? <p>Você não tem nenhum hábito <br /> cadastrado ainda. Adicione um hábito <br /> para começar a trackear!</p> : <p>oii</p>}
+
+                <div style={hidden == true ? {display:'block'} : { display: 'none' }}>
+                <AddButton/>
+                </div>
+
+                    <br />
+                    <br />
+
+                    <List />
+
                 </ContainerHabits>
 
                 <Footer />
@@ -58,7 +66,7 @@ export default function Habits() {
 
 const Container = styled.div`
     background-color: #E5E5E5;
-    height: 100vmax;
+   height: 100vh;
     width: 100%;
 `
 

@@ -1,6 +1,8 @@
+import axios from "axios";
 import react, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import { ThreeDots } from 'react-loader-spinner'
 
 const dias = [];
 
@@ -15,11 +17,49 @@ function clickSeat(e) {
     console.log(dias)
 }
 
-export default function AddButton() {
+const listDays = [
+    {
+      id:'7',
+      dia: 'D',
+      isSelected:false
+    },{
+        id:'1',
+        dia: 'S',
+        isSelected:false
+      },
+    {
+        id:'2',
+        dia: 'T',
+        isSelected:false
+      },
+      {
+        id:'3',
+        dia: 'Q',
+        isSelected:false
+      },
+      {
+        id:'4',
+        dia: 'Q',
+        isSelected:false
+      },
+      {
+        id:'5',
+        dia: 'S',
+        isSelected:false
+      },
+      {
+        id:'6',
+        dia: 'S',
+        isSelected:false
+      },
+]
+
+function MenuDays(props) {
 
     const [selected, setSelected] = useState(false);
+    
 
-    function like() {
+    function Change() {
         if (selected == true) {
             setSelected(false)
         } else {
@@ -27,42 +67,82 @@ export default function AddButton() {
         }
     }
 
-return (
-    <>
-        <Card>
-            <Formulario>
-                <form>
+    return(
+        <>
+        <Box onClick={() => Change()}>
+               <div style={selected == true ? { backgroundColor: '#C4C4C4', color:'#fff' } : { backgroundColor: '#fff' }} onClick={() => { clickSeat(props.id); }}>{props.dia}</div> 
+        </Box>       
+        </>
+    )
+}
 
-                    <input type="text" placeholder="nome do hábito" required />
+export default function AddButton() {
 
-                    <ContainerDays>
-
-                        <Box onClick={() => like()}>
-                        <div style={selected == true ? { backgroundColor: '#C4C4C4' } : { backgroundColor: '#fff' }} onClick={() => { clickSeat('7'); }}>D</div> 
-                        </Box>
-
-                        <Box onClick={() => like()}>
-                        <div style={selected == true ? { backgroundColor: '#C4C4C4' } : { backgroundColor: '#fff' }} onClick={() => { clickSeat('1'); }}>S</div> 
-                        </Box>
+    const [habito, setHabito] = useState('')
+    const [save, setSave] = useState('Salvar')
+    const [disabled, setDisabled] = useState(false)
+    
 
 
-                        <div onClick={() => clickSeat('2')}>T</div>
-                        <div onClick={() => clickSeat('3')}>Q</div>
-                        <div onClick={() => clickSeat('4')}>Q</div>
-                        <div onClick={() => clickSeat('5')}>S</div>
-                        <div onClick={() => clickSeat('6')}>S</div>
-                    </ContainerDays>
+    const get = localStorage.getItem('trackit')
+    const string = JSON.stringify(get)
+    const auth = JSON.parse(string)
 
-                    <ContainerButton>
-                        <ButtonOne>Cancelar</ButtonOne>
-                        <ButtonTwo>Salvar</ButtonTwo>
-                    </ContainerButton>
+    
 
-                </form>
-            </Formulario>
-        </Card>
-    </>
-)
+    function Esconder() {
+        document.location.reload(true);
+    }
+
+    function Post() {
+
+        const body = {
+            name: habito,
+            days: dias
+        }
+
+        const config = {
+            headers: {
+              'Authorization': `Bearer ${auth}`
+            }
+         }
+
+        const send = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', body, config)
+        
+    }
+
+      function handleForm(e) {
+        e.preventDefault()
+         Post()
+         setDisabled(true)
+         setSave(<ThreeDots color="#FFFFFF" height={13} width={51} />)
+        setTimeout(() => {
+            document.location.reload(true)
+        }, 2000);
+     }
+
+    return (
+        <>
+            <Card>
+                <Formulario>
+                    <form onSubmit={handleForm}>
+
+                        <input type="text" value={habito} onChange={(e) => setHabito(e.target.value)} placeholder="nome do hábito" required />
+
+                        <ContainerDays>
+                            {listDays.map((item, index) => <MenuDays key={index} id={item.id} dia={item.dia}/>)}
+                        </ContainerDays>
+
+                        <ContainerButton>
+                            <Cancel onClick={() => Esconder()}>Cancelar</Cancel>
+                            <ButtonTwo>{save}</ButtonTwo>
+                        </ContainerButton>
+
+                    </form>
+                </Formulario>
+            </Card>
+        </>
+    )
 
 }
 
@@ -71,7 +151,6 @@ width: 340px;
 height: 180px;
 background-color: #fff;
 border-radius: 5px;
-border: 1px solid black;
 `
 const Formulario = styled.div`
 display: flex;
@@ -112,6 +191,7 @@ div {
     color: #DBDBDB;
     font-family: 'Lexend Deca', sans-serif;
     font-size: 20px;
+    transition: all ease-in-out 0.2s;
 }
 `
 
@@ -121,12 +201,13 @@ margin-top: 25px;
 margin-left: 120px;
 box-sizing: border-box;
 `
-const ButtonOne = styled.button`
+const Cancel = styled.a`
     border: none;
     background-color: #fff;
     color: #52B6FF;
     font-family: 'Lexend Deca', sans-serif;
     font-size: 16px;
+    padding-top: 10px;
 `
 
 
