@@ -5,56 +5,53 @@ import { useNavigate } from "react-router-dom"
 
 const listDays = [
     {
-        id: '7',
+        id: '0',
         dia: 'D',
-        isSelected: false
     }, {
         id: '1',
         dia: 'S',
-        isSelected: false
     },
     {
         id: '2',
         dia: 'T',
-        isSelected: false
     },
     {
         id: '3',
         dia: 'Q',
-        isSelected: false
     },
     {
         id: '4',
         dia: 'Q',
-        isSelected: false
     },
     {
         id: '5',
         dia: 'S',
-        isSelected: false
     },
     {
         id: '6',
         dia: 'S',
-        isSelected: false
     },
 ]
 
 
 function MenuList(props) {
+
     return (
         <ContHabits>
 
-           <HabitDel> <p>{props.userHabit}</p></HabitDel>
+            <HabitDel>
+                <p>{props.userHabit}</p>
+                <ion-icon name="trash-outline"></ion-icon>
+            </HabitDel>
 
-           <ContWeek>
-            <div id={listDays[0].id}>{listDays[0].dia}</div>
-            <div id={listDays[1].id}>{listDays[1].dia}</div>
-            <div id={listDays[2].id}>{listDays[2].dia}</div>
-            <div id={listDays[3].id}>{listDays[3].dia}</div>
-            <div id={listDays[4].id}>{listDays[4].dia}</div>
-            <div id={listDays[5].id}>{listDays[5].dia}</div>
-            <div id={listDays[6].id}>{listDays[6].dia}</div>
+            <ContWeek>
+                <div id={listDays[0].id}>{listDays[0].dia}</div>
+                <div id={listDays[1].id}>{listDays[1].dia}</div>
+                <div id={listDays[2].id}>{listDays[2].dia}</div>
+                <div id={listDays[3].id}>{listDays[3].dia}</div>
+                <div id={listDays[4].id}>{listDays[4].dia}</div>
+                <div id={listDays[5].id}>{listDays[5].dia}</div>
+                <div id={listDays[6].id}>{listDays[6].dia}</div>
             </ContWeek>
 
         </ContHabits>
@@ -63,6 +60,7 @@ function MenuList(props) {
 
 export default function List() {
     const [habitos, setHabitos] = useState([])
+    const [id, setId] = useState([])
 
     const Navigate = useNavigate()
     const get = localStorage.getItem('trackit')
@@ -84,9 +82,16 @@ export default function List() {
         }
 
         const promisse = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', config);
-        promisse.then(res => setHabitos(res.data));
+        promisse.then(res => {setHabitos(res.data); setId(res.data)});
         promisse.catch(err => console.log(err.response.status))
     }, [])
+
+    console.log(habitos)
+/* 
+    useEffect(() => {
+        const PromisseDel = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`)
+    }) */
+
 
     return (
         <>
@@ -105,10 +110,15 @@ padding: 13px 15px;
 `
 const HabitDel = styled.div`
 
+    display: flex;
+    justify-content: space-between;
 
+    p {
+        font-size: 20px;
+    }
 `
 
-const ContWeek  = styled.div`
+const ContWeek = styled.div`
 display: flex;
 margin-top: 20px;
 

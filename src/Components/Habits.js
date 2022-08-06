@@ -51,9 +51,6 @@ export default function Habits() {
                 <AddButton/>
                 </div>
 
-                    <br />
-                    <br />
-
                     <List />
 
                 </ContainerHabits>
@@ -66,7 +63,7 @@ export default function Habits() {
 
 const Container = styled.div`
     background-color: #E5E5E5;
-   height: 100vh;
+   height: 110vh;
     width: 100%;
 `
 
@@ -100,6 +97,7 @@ display: flex;
 flex-direction: column;
 justify-content: center;
 align-items: center;
+padding-bottom: 80px;
 
 p {
     font-family: 'Lexend Deca';
