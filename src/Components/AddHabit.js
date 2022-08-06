@@ -15,24 +15,9 @@ function clickSeat(e) {
     console.log(dias)
 }
 
-
-
-function Semana(props) {
-    
-    const [selected, setSelected] = useState(false);
-    console.log(selected)
-
-    return (
-        <>
-            <div style={selected == true ? { backgroundColor: 'red' } : { backgroundColor: 'black' }} onClick={() => { clickSeat(props.dia); }}>{props.weekday}</div>
-        </>
-    )
-}
-
 export default function AddButton() {
 
     const [selected, setSelected] = useState(false);
-    const [days, setDays] = useState('#fff');
 
     function like() {
         if (selected == true) {
@@ -41,14 +26,6 @@ export default function AddButton() {
             setSelected(true)
         }
     }
-
-useParams(() => {
-        selected == true ? setSelected(false) : setSelected(true);
-    
-})
-
-
-
 
 return (
     <>
@@ -59,10 +36,16 @@ return (
                     <input type="text" placeholder="nome do hábito" required />
 
                     <ContainerDays>
+
                         <Box onClick={() => like()}>
-                            <Semana dia='7'  weekday='D' />
+                        <div style={selected == true ? { backgroundColor: '#C4C4C4' } : { backgroundColor: '#fff' }} onClick={() => { clickSeat('7'); }}>D</div> 
                         </Box>
-                        <div onClick={() => clickSeat('1')}>S</div>
+
+                        <Box onClick={() => like()}>
+                        <div style={selected == true ? { backgroundColor: '#C4C4C4' } : { backgroundColor: '#fff' }} onClick={() => { clickSeat('1'); }}>S</div> 
+                        </Box>
+
+
                         <div onClick={() => clickSeat('2')}>T</div>
                         <div onClick={() => clickSeat('3')}>Q</div>
                         <div onClick={() => clickSeat('4')}>Q</div>

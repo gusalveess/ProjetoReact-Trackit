@@ -43,7 +43,7 @@ export default function Habits() {
 
                 <AddHabits>
                     <p>Meus Hábitos</p>
-                    <button onClick={Navigate('/add')}>+</button>
+                    <button /*  onClick={Navigate('/add') */>+</button>
                 </AddHabits>
 
                 <ContainerHabits>
