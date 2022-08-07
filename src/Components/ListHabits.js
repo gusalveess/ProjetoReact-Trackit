@@ -2,65 +2,17 @@ import { useEffect, useState } from "react"
 import styled from 'styled-components'
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
+import dayjs from "dayjs"
 
-const listDays = [
-    {
-        id: '0',
-        dia: 'D',
-    }, {
-        id: '1',
-        dia: 'S',
-    },
-    {
-        id: '2',
-        dia: 'T',
-    },
-    {
-        id: '3',
-        dia: 'Q',
-    },
-    {
-        id: '4',
-        dia: 'Q',
-    },
-    {
-        id: '5',
-        dia: 'S',
-    },
-    {
-        id: '6',
-        dia: 'S',
-    },
-]
+console.log(dayjs().date())
 
+const listDays = ["D", "S", "T", "Q", "Q", "S", "S"];
 
-function MenuList(props) {
-
-    return (
-        <ContHabits>
-
-            <HabitDel>
-                <p>{props.userHabit}</p>
-                <ion-icon name="trash-outline"></ion-icon>
-            </HabitDel>
-
-            <ContWeek>
-                <div id={listDays[0].id}>{listDays[0].dia}</div>
-                <div id={listDays[1].id}>{listDays[1].dia}</div>
-                <div id={listDays[2].id}>{listDays[2].dia}</div>
-                <div id={listDays[3].id}>{listDays[3].dia}</div>
-                <div id={listDays[4].id}>{listDays[4].dia}</div>
-                <div id={listDays[5].id}>{listDays[5].dia}</div>
-                <div id={listDays[6].id}>{listDays[6].dia}</div>
-            </ContWeek>
-
-        </ContHabits>
-    )
-}
 
 export default function List() {
     const [habitos, setHabitos] = useState([])
-    const [id, setId] = useState([])
+    const [info, setInfo] = useState([])
+    const [inform, setInform] = useState([])
 
     const Navigate = useNavigate()
     const get = localStorage.getItem('trackit')
@@ -82,20 +34,83 @@ export default function List() {
         }
 
         const promisse = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', config);
-        promisse.then(res => {setHabitos(res.data); setId(res.data)});
+        promisse.then(res => { setHabitos(res.data); setInfo(res.data) });
         promisse.catch(err => console.log(err.response.status))
     }, [])
 
-    console.log(habitos)
-/* 
-    useEffect(() => {
-        const PromisseDel = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`)
-    }) */
 
+    function MenuList(props) {
+
+        const get = localStorage.getItem('trackit')
+        const string = JSON.stringify(get)
+        const auth = JSON.parse(string)
+
+
+
+        function del(habit) {
+
+            const config = {
+                headers: {
+                    'Authorization': `Bearer ${auth}`
+                }
+            }
+
+            const confirmar = window.confirm('Tem certeza?')
+
+            if (confirmar) {
+                const PromisseDel = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit}`, config)
+                console.log(habit)
+
+                setTimeout(() => {
+                    document.location.reload(true)
+                }, 1000);
+            } else {
+                document.location.reload()
+            }
+
+        }
+
+        console.log(habitos)
+
+        return (
+            <>
+
+                {habitos.map((habit, index) => {
+
+                    return (
+                        <>
+
+                        <ContHabits>    
+                            <ContWeek key={habit.id}>
+
+                                <HabitDel>
+                                    <p>{habit.name}</p>
+                                    <ion-icon onClick={() => del(habit.id)} name="trash-outline"></ion-icon>
+                                </HabitDel>
+
+                                <div>
+                                    {listDays.map((day, index) => {
+                                        return ((habit.days).includes(index) ?
+                                            <DaySelect style={{backgroundColor:"#cfcfcf", color:'#FFFFFF'}} key={index}>{day}</DaySelect> :
+                                            <DaySelect style={{backgroundColor:"#fff", color:'#666'}} key={index}>{day}</DaySelect>)
+                                    })}
+                             
+                
+                                </div>
+                            </ContWeek>
+                        </ContHabits>   
+                        </>
+                    )
+                })
+                }
+                </>
+        )
+        
+    }
 
     return (
         <>
-            {habitos.length === 0 ? <p>Você não tem nenhum hábito <br /> cadastrado ainda. Adicione um hábito <br /> para começar a trackear!</p> : habitos.map((item) => <MenuList userHabit={item.name} />)}
+            {habitos.length === 0 ? <p>Você não tem nenhum hábito <br /> cadastrado ainda. Adicione um hábito <br /> para começar a trackear!</p> : <MenuList />}
         </>
     )
 }
@@ -112,6 +127,7 @@ const HabitDel = styled.div`
 
     display: flex;
     justify-content: space-between;
+    margin: 0px 10px 15px 10px;
 
     p {
         font-size: 20px;
@@ -120,9 +136,14 @@ const HabitDel = styled.div`
 
 const ContWeek = styled.div`
 display: flex;
+flex-direction: column;
 margin-top: 20px;
 
 div {
+    display: flex;
+}
+`
+const DaySelect = styled.div`
     width: 30px;
     height: 30px;
     margin-left: 10px;
@@ -134,6 +155,4 @@ div {
     color: #DBDBDB;
     font-family: 'Lexend Deca', sans-serif;
     font-size: 20px;
-    transition: all ease-in-out 0.2s;
-}
 `

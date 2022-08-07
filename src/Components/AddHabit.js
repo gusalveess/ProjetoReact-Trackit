@@ -19,7 +19,7 @@ function clickSeat(e) {
 
 const listDays = [
     {
-      id:'7',
+      id:'0',
       dia: 'D',
       isSelected:false
     },{

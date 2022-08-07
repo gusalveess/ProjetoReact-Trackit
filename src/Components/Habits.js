@@ -103,6 +103,7 @@ p {
     font-family: 'Lexend Deca';
         font-size: 15px;
         color: #666666;
+        padding-top: 10px;
 }
 
 `
