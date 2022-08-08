@@ -1,31 +1,46 @@
 import styled from "styled-components"
-import react, {useContext} from "react"
+import react, { useContext } from "react"
 import UserContext from "../Contexts/UserContext"
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar"
 import "react-circular-progressbar/dist/styles.css";
+import { Link } from "react-router-dom";
+
 export default function Footer() {
 
-    const {progress, habitosHoje} = useContext(UserContext)
-    const percentage = ((progress/habitosHoje.length)*100);
+    const  { progress, habitosHoje } = useContext(UserContext)
+    const percentage = ((progress / habitosHoje.length) * 100);
 
-    return(
+    function Send() {
+        localStorage.setItem('progresso', progress)
+    }
+
+    return (
         <>
-        <BarraBaixo>
+            <BarraBaixo>
+
+                <Link to={'/Habitos'}>
                     <Habits>Hábitos</Habits>
+                </Link>
+
+                <Link to={'/Hoje'}>
                     <CircularProgressbar
-                    value={percentage}
-                    text={!percentage ? `Hoje ${percentage}` : `Hoje`}
-                    background
-                    backgroundPadding={6}
-                    styles={buildStyles({
-                        backgroundColor: "#3e98c7",
-                        textColor: "#fff",
-                        pathColor: "#fff",
-                        textSize: '23',
-                    })}
-                />
+                        onClick={Send()}
+                        value={percentage}
+                        text={`Hoje`}
+                        background
+                        backgroundPadding={6}
+                        styles={buildStyles({
+                            backgroundColor: "#3e98c7",
+                            textColor: "#fff",
+                            pathColor: "#fff",
+                            textSize: '23',
+                        })}
+                    />  </Link>
+
+                <Link to={'/Historico'}>
                     <History>Histórico</History>
-        </BarraBaixo>
+                </Link>
+            </BarraBaixo>
         </>
     )
 }
@@ -45,6 +60,12 @@ const BarraBaixo = styled.div`
     height: 91px;
     position: absolute;
     bottom: 15px;
+    left: 145px;
+    }
+
+    a {
+        width: 70px;
+        text-decoration: none;
     }
 `
 const Habits = styled.p`

@@ -3,7 +3,8 @@ import { useState } from 'react'
 import Login from './Login'
 import SignUp from './SignUp'
 import Habits from './Habits'
-import AddButton from './AddHabit'
+import Today from './Today'
+import Historic from './Historic'
 import UserContext from '../Contexts/UserContext'
 import InfoContext from "../Contexts/InfoContext"
 
@@ -13,9 +14,9 @@ import InfoContext from "../Contexts/InfoContext"
 export default function App() {
 
     const [user, setUser] = useState({})
-    const [token, setToken] = useState('')
+    const [token, setToken] = useState(null)
     const [habitosHoje, setHabitosHoje] = useState([])
-    const [progress, setProgress] = useState(1)
+    const [progress, setProgress] = useState('0')
 
     return (
         <InfoContext.Provider value={{token, setToken}}>
@@ -24,9 +25,10 @@ export default function App() {
                     <Routes>
 
                         <Route path='/' element={<Login />} />
-                        <Route path='/cadastro' element={<SignUp />} />
-                        <Route path='/habitos' element={<Habits />} />
-                        <Route path='/add' element={<AddButton />} />
+                        <Route path='/Cadastro' element={<SignUp />} />
+                        <Route path='/Habitos' element={<Habits />} />
+                        <Route path='/Hoje' element={<Today/>} />
+                        <Route path='/Historico' element={<Historic />} />
 
                     </Routes>
                 </BrowserRouter>

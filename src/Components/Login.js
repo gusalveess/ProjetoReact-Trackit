@@ -49,7 +49,7 @@ export default function Login() {
         setLogin(<ThreeDots color="#FFFFFF" height={13} width={51} />)
         setTimeout(() => {
             document.location.reload(true)
-        }, 1000);
+        }, 1500);
     }
 
     return (

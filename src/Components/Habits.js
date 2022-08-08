@@ -1,11 +1,11 @@
-import react, {useContext, useEffect, useState} from "react";
+import react, { useContext, useEffect, useState } from "react";
 import styled from 'styled-components';
 import UserContext from "../Contexts/UserContext";
 import InfoContext from "../Contexts/InfoContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Footer from "./Footer";
-import Header from "./header";
+import Header from "./Header";
 import AddButton from './AddHabit'
 import List from './ListHabits'
 
@@ -24,9 +24,9 @@ export default function Habits() {
 
     const [hidden, setHidden] = useState(false);
 
-     function hidde() {
-       
-        if(hidden == false) {
+    function hidde() {
+
+        if (hidden == false) {
             setHidden(true)
         }
         else {
@@ -35,21 +35,21 @@ export default function Habits() {
     }
 
     return (
-        
+
         <>
             <Container>
                 <Header />
 
                 <AddHabits>
                     <p>Meus Hábitos</p>
-                    <button onClick={() =>hidde()}>+</button>
+                    <button onClick={() => hidde()}>+</button>
                 </AddHabits>
 
                 <ContainerHabits>
 
-                <div style={hidden == true ? {display:'block'} : { display: 'none' }}>
-                <AddButton/>
-                </div>
+                    <div style={hidden == true ? { display: 'block' } : { display: 'none' }}>
+                        <AddButton />
+                    </div>
 
                     <List />
 
@@ -101,9 +101,8 @@ padding-bottom: 80px;
 
 p {
     font-family: 'Lexend Deca';
-        font-size: 15px;
+        font-size: 18px;
         color: #666666;
-        padding-top: 10px;
 }
 
 `

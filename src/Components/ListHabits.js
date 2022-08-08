@@ -2,9 +2,6 @@ import { useEffect, useState } from "react"
 import styled from 'styled-components'
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
-import dayjs from "dayjs"
-
-console.log(dayjs().date())
 
 const listDays = ["D", "S", "T", "Q", "Q", "S", "S"];
 
@@ -80,37 +77,37 @@ export default function List() {
                     return (
                         <>
 
-                        <ContHabits>    
-                            <ContWeek key={habit.id}>
+                            <ContHabits>
+                                <ContWeek key={habit.id}>
 
-                                <HabitDel>
-                                    <p>{habit.name}</p>
-                                    <ion-icon onClick={() => del(habit.id)} name="trash-outline"></ion-icon>
-                                </HabitDel>
+                                    <HabitDel>
+                                        <p>{habit.name}</p>
+                                        <ion-icon onClick={() => del(habit.id)} name="trash-outline"></ion-icon>
+                                    </HabitDel>
 
-                                <div>
-                                    {listDays.map((day, index) => {
-                                        return ((habit.days).includes(index) ?
-                                            <DaySelect style={{backgroundColor:"#cfcfcf", color:'#FFFFFF'}} key={index}>{day}</DaySelect> :
-                                            <DaySelect style={{backgroundColor:"#fff", color:'#666'}} key={index}>{day}</DaySelect>)
-                                    })}
-                             
-                
-                                </div>
-                            </ContWeek>
-                        </ContHabits>   
+                                    <div>
+                                        {listDays.map((day, index) => {
+                                            return ((habit.days).includes(index) ?
+                                                <DaySelect style={{ backgroundColor: "#cfcfcf", color: '#FFFFFF' }} key={index}>{day}</DaySelect> :
+                                                <DaySelect style={{ backgroundColor: "#fff", color: '#666' }} key={index}>{day}</DaySelect>)
+                                        })}
+
+
+                                    </div>
+                                </ContWeek>
+                            </ContHabits>
                         </>
                     )
                 })
                 }
-                </>
+            </>
         )
-        
+
     }
 
     return (
         <>
-            {habitos.length === 0 ? <p>Você não tem nenhum hábito <br /> cadastrado ainda. Adicione um hábito <br /> para começar a trackear!</p> : <MenuList />}
+            {habitos.length === 0 ? <Nothing>Você não tem nenhum hábito <br /> cadastrado ainda. Adicione um hábito <br /> para começar a trackear!</Nothing> : <MenuList />}
         </>
     )
 }
@@ -128,6 +125,7 @@ const HabitDel = styled.div`
     display: flex;
     justify-content: space-between;
     margin: 0px 10px 15px 10px;
+
 
     p {
         font-size: 20px;
@@ -155,4 +153,10 @@ const DaySelect = styled.div`
     color: #DBDBDB;
     font-family: 'Lexend Deca', sans-serif;
     font-size: 20px;
+`
+const Nothing = styled.p`
+        font-family: 'Lexend Deca';
+        font-size: 18px;
+        color: #666666;
+        padding-top: 10px;
 `

@@ -38,6 +38,7 @@ export default function SignUp() {
         promise.then(() => 
         navigate('/')
         )
+        promise.catch('algo deu errado')
     }
 
     function handleForm(e) {
