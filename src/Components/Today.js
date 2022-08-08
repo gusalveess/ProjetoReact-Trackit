@@ -19,7 +19,6 @@ export default function Today() {
     const convert = JSON.stringify(pegar)
     const finale = JSON.parse(convert)
 
-    const search = localStorage.getItem('done')
 
 
 
@@ -46,36 +45,39 @@ export default function Today() {
         promisse.catch(err => console.log(err.response.status))
     }, [])
 
-    console.log(habitosHoje)
 
 
-    function Check(item, itemTwo) {
-        
+    function Check(item) {
+
         const config = {
             headers: {
                 'Authorization': `Bearer ${auth}`
             }
         }
 
-        if(itemTwo == false) {
-            const promessa = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${item}/check`, null, config)
-            promessa.then(() => { setProgress(1) })
+        {habitosHoje.map((item) => {
+
+        if(item.done == false) {
+            const promessa = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${item.id}/check`, null, config)
+            promessa.then(() => { setProgress(100) })
             promessa.catch(() => console.log('deu ruim'))
-            setReload(!reload)
-            console.log(itemTwo)
-            localStorage.setItem('done', true)
+            setTimeout(() => {
+                document.location.reload(true)
+            }, 1500);
         }
 
         else {
         
-            const promessa = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${item}/uncheck`, null, config)
+            const promessa = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${item.id}/uncheck`, null, config)
             promessa.catch(() => console.log('deu ruim'))
-            setReload(!reload)
-            console.log(itemTwo)
-            localStorage.setItem('done', false)
+            setTimeout(() => {
+                document.location.reload(true)
+            }, 1500);
         }
-       
+        console.log(item.done)
+    })
     }
+}
 
     function MenuHoje() {
 
@@ -85,9 +87,9 @@ export default function Today() {
         return (
             <>
 
-                {habitosHoje.map((item, itemTwo) => {
+                {habitosHoje.map((item) => {
 
-console.log(itemTwo)
+console.log(item.done)
 
                     return (
                         <>
@@ -104,7 +106,7 @@ console.log(itemTwo)
                                     </Flex>
                                 </div>
 
-                                <Button isCheck={item.done ? isCheckTrue : isCheckFalse} onClick={() => { Check(item.id, itemTwo.done) }}>
+                                <Button isCheck={item.done ? isCheckTrue : isCheckFalse} onClick={() => { Check(item.id, item.done) }}>
                                     <img src={Vector} />
                                 </Button>
 
@@ -127,7 +129,6 @@ console.log(itemTwo)
 
                 <MenuToday>
                     <h1>{date}</h1>
-                    {finale > 0 ? <Percent isChanged={finale > 0 ? isChangedTrue : isChangedFalse}>{percentage.toFixed(0)}% dos hábitos concluídos</Percent> : <Percent isChanged={finale > 0 ? isChangedTrue : isChangedFalse}>Nenhum hábito concluído ainda</Percent>}
                     <MenuHoje />
                 </MenuToday>
 
