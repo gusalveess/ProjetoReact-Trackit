@@ -13,7 +13,6 @@ function clickSeat(e) {
     else {
         dias.push(e)
     }
-    console.log(dias)
 }
 
 const listDays = [

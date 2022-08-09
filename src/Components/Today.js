@@ -22,8 +22,8 @@ export default function Today() {
 
 
 
-    
-    const  { setProgress, habitosHoje, setHabitosHoje } = useContext(UserContext)
+
+    const { setProgress, habitosHoje, setHabitosHoje } = useContext(UserContext)
     const percentage = ((finale / habitosHoje.length) * 100);
     const [reload, setReload] = useState(false)
 
@@ -55,29 +55,30 @@ export default function Today() {
             }
         }
 
-        {habitosHoje.map((item) => {
+        {
+            habitosHoje.map((item) => {
 
-        if(item.done == false) {
-            const promessa = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${item.id}/check`, null, config)
-            promessa.then(() => { setProgress(100) })
-            promessa.catch(() => console.log('deu ruim'))
-            setTimeout(() => {
-                document.location.reload(true)
-            }, 1500);
-        }
+                if (item.done == false) {
+                    const promessa = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${item.id}/check`, null, config)
+                    promessa.then(() => { setProgress(100) })
 
-        else {
-        
-            const promessa = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${item.id}/uncheck`, null, config)
-            promessa.catch(() => console.log('deu ruim'))
-            setTimeout(() => {
-                document.location.reload(true)
-            }, 1500);
+                    setTimeout(() => {
+                        document.location.reload(true)
+                    }, 1500);
+                }
+
+                else {
+
+                    const promessa = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${item.id}/uncheck`, null, config)
+
+                    setTimeout(() => {
+                        document.location.reload(true)
+                    }, 1500);
+                }
+                
+            })
         }
-        console.log(item.done)
-    })
     }
-}
 
     function MenuHoje() {
 
@@ -89,7 +90,6 @@ export default function Today() {
 
                 {habitosHoje.map((item) => {
 
-console.log(item.done)
 
                     return (
                         <>

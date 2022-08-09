@@ -10,10 +10,6 @@ export default function Footer() {
     const  { progress, habitosHoje } = useContext(UserContext)
     const percentage = ((progress / habitosHoje.length) * 100);
 
-    function Send() {
-        localStorage.setItem('progresso', progress)
-    }
-
     return (
         <>
             <BarraBaixo>
@@ -24,7 +20,6 @@ export default function Footer() {
 
                 <Link to={'/Hoje'}>
                     <CircularProgressbar
-                        onClick={Send()}
                         value={percentage}
                         text={`Hoje`}
                         background

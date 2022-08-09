@@ -56,7 +56,6 @@ export default function List() {
 
             if (confirmar) {
                 const PromisseDel = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit}`, config)
-                console.log(habit)
 
                 setTimeout(() => {
                     document.location.reload(true)
@@ -67,7 +66,6 @@ export default function List() {
 
         }
 
-        console.log(habitos)
 
         return (
             <>
